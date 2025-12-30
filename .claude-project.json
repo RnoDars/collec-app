@@ -460,28 +460,63 @@
       "6. ITÉRATION : Passer à la prochaine version ou fonctionnalité"
     ],
     "developmentCycle": {
-      "description": "Cycle de développement OBLIGATOIRE pour CHAQUE fonctionnalité",
+      "description": "Cycle de développement TDD (Test-Driven Development) OBLIGATOIRE",
+      "approach": "RED-GREEN-REFACTOR",
       "steps": [
-        "1. Planifier - Définir ce qu'on va développer",
-        "2. Écrire le code - Implémenter la fonctionnalité",
-        "3. Écrire les tests - Tests unitaires couvrant tous les cas (succès + erreurs)",
-        "4. Exécuter les tests - Backend: go test ./... -v | Frontend: npm test",
-        "5. Vérifier la couverture - Minimum 80% requis",
-        "6. Tester manuellement (si applicable) - curl, navigateur, etc.",
-        "7. Corriger si nécessaire - Retour à l'étape 2 si tests échouent",
-        "8. Commit - SEULEMENT si tous les tests passent ✅"
+        "1. Planifier - Définir ce qu'on va développer (spécifications fonctionnelles)",
+        "2. ÉCRIRE LES TESTS D'ABORD - Tests unitaires/E2E qui échouent (RED) ❌",
+        "3. COMMIT TESTS - Commiter les tests qui échouent avec préfixe 'test:'",
+        "4. Écrire le code minimum - Implémenter juste assez pour faire passer les tests (GREEN) ✅",
+        "5. Exécuter les tests - Backend: go test ./... -v | Frontend: npm test",
+        "6. Vérifier la couverture - Minimum 80% requis",
+        "7. COMMIT CODE - Commiter le code qui fait passer les tests avec préfixe 'feat:/fix:'",
+        "8. Refactorer (optionnel) - Améliorer le code sans changer le comportement",
+        "9. Tester manuellement - curl, navigateur, etc. pour validation finale",
+        "10. COMMIT REFACTOR (si applicable) - Commiter les améliorations avec préfixe 'refactor:'"
+      ],
+      "methodology": "TDD (Test-Driven Development)",
+      "principles": [
+        "🔴 RED: Écrire un test qui échoue d'abord",
+        "🟢 GREEN: Écrire le code minimum pour faire passer le test",
+        "🔵 REFACTOR: Améliorer le code tout en gardant les tests verts",
+        "📝 Commiter les tests AVANT le code d'implémentation",
+        "🎯 Un test = Une spécification fonctionnelle"
       ],
       "rules": [
-        "🚫 JAMAIS de commit sans tests écrits",
-        "🚫 JAMAIS de commit si les tests échouent",
+        "🚫 JAMAIS de code sans tests écrits AVANT",
+        "🚫 JAMAIS de commit de code si les tests n'existent pas",
+        "✅ Étape 1: Commiter les tests qui échouent (RED)",
+        "✅ Étape 2: Commiter le code qui fait passer les tests (GREEN)",
+        "✅ Étape 3 (optionnel): Commiter le refactoring si nécessaire",
         "✅ Couverture minimum : 80%",
-        "✅ Tous les tests doivent passer à 100%",
-        "✅ Tests unitaires + tests manuels si applicable",
-        "✅ Mentionner les tests dans le message de commit"
+        "✅ Tous les tests doivent passer à 100% avant commit du code",
+        "✅ Séparer clairement: 1 commit tests + 1 commit code"
       ],
-      "commitFormat": {
-        "template": "feat/fix: description\n\nCode:\n- Fichier 1\n- Fichier 2\n\nTests:\n- Test file (X tests, Y% coverage)\n- Résultats: ✅ All tests passing\n\nTests manuels (si applicable):\n✅ Test 1\n✅ Test 2"
-      }
+      "commitWorkflow": {
+        "step1_tests": {
+          "prefix": "test:",
+          "template": "test: ajoute tests pour [fonctionnalité]\n\nTests ajoutés:\n- [test_file.go/tsx] (X tests)\n- Couvre: [cas 1], [cas 2], [cas 3]\n\n❌ Status: Tests échouent (RED) - implémentation à venir",
+          "example": "test: ajoute tests pour l'authentification utilisateur\n\nTests ajoutés:\n- auth_service_test.go (5 tests)\n- Couvre: register, login, token validation, errors\n\n❌ Status: 0/5 tests passent (RED)"
+        },
+        "step2_implementation": {
+          "prefix": "feat:/fix:",
+          "template": "feat: implémente [fonctionnalité]\n\nCode:\n- [fichier1]\n- [fichier2]\n\n✅ Tests: X/X passent (GREEN)\n✅ Couverture: Y%\n\nTests manuels:\n✅ [test manuel 1]\n✅ [test manuel 2]",
+          "example": "feat: implémente l'authentification utilisateur\n\nCode:\n- auth_service.go\n- auth_handler.go\n\n✅ Tests: 5/5 passent (GREEN)\n✅ Couverture: 92%\n\nTests manuels:\n✅ curl POST /api/auth/register\n✅ curl POST /api/auth/login"
+        },
+        "step3_refactor": {
+          "prefix": "refactor:",
+          "template": "refactor: améliore [aspect] de [fonctionnalité]\n\n- Amélioration 1\n- Amélioration 2\n\n✅ Tests: X/X passent (toujours GREEN)",
+          "example": "refactor: améliore la gestion des erreurs dans auth_service\n\n- Extraction de la validation dans une fonction dédiée\n- Meilleure structure des erreurs personnalisées\n\n✅ Tests: 5/5 passent"
+        }
+      },
+      "benefits": [
+        "✅ Garantit que le code répond aux spécifications",
+        "✅ Force à réfléchir à l'API/interface avant l'implémentation",
+        "✅ Tests comme documentation vivante du comportement attendu",
+        "✅ Détection immédiate des régressions",
+        "✅ Code plus simple et maintenable (YAGNI - You Aren't Gonna Need It)",
+        "✅ Historique Git clair : tests → implémentation → refactoring"
+      ]
     },
     "versioning": {
       "strategy": "Semantic Versioning (MAJOR.MINOR.PATCH)",
