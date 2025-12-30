@@ -8,15 +8,23 @@ Créer une application performante permettant aux utilisateurs de gérer, organi
 
 ## ✨ Fonctionnalités (Roadmap)
 
-### v0.1.0 - Configuration initiale 🚧 (En cours de test)
+### v0.1.0 - Configuration initiale 🚧 (En cours de finalisation)
 - [x] Configuration complète du projet
 - [x] Architecture monorepo (backend Go + frontend Next.js)
 - [x] Stack de monitoring (Prometheus, Grafana, Loki)
 - [x] Infrastructure Docker (PostgreSQL, Kafka)
 - [x] Tests Backend Go ✅
 - [x] Tests Frontend Next.js ✅
-- [ ] Tests Infrastructure Docker (en attente d'environnement Docker)
+- [x] Tests Infrastructure Docker (partiel) ⚠️
+  - ✅ PostgreSQL opérationnel
+  - ✅ Kafka + Zookeeper opérationnels
+  - ✅ Prometheus opérationnel (après correction permissions)
+  - ✅ Grafana opérationnel (après correction permissions)
+  - ❌ Loki: configuration obsolète à corriger (schema v11 → v13)
+- [ ] Corriger la configuration Loki
 - [ ] Tests end-to-end complets
+
+**📋 Voir [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) pour les détails des problèmes identifiés**
 
 ### v0.2.0 - Authentification (Planifié)
 - [ ] Inscription et connexion utilisateur
