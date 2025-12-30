@@ -27,10 +27,18 @@ Créer une application performante permettant aux utilisateurs de gérer, organi
 
 **📋 Voir [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) pour l'historique des corrections**
 
-### v0.2.0 - Authentification (Planifié)
-- [ ] Inscription et connexion utilisateur
-- [ ] Système JWT avec refresh tokens
-- [ ] Gestion du profil utilisateur
+### v0.2.0 - Authentification ✅
+- [x] Backend : Inscription et connexion utilisateur
+- [x] Backend : Système JWT avec refresh tokens
+- [x] Backend : Endpoints protégés avec middleware
+- [x] Backend : Tests unitaires (service auth)
+- [x] Backend : Tests E2E (13 tests automatisés)
+- [x] Frontend : Composants LoginForm et RegisterForm
+- [x] Frontend : Pages d'authentification (/login, /register, /profile)
+- [x] Frontend : Store Zustand avec persistance
+- [x] Frontend : Tests unitaires (18 tests, 100% couverture composants)
+- [x] Tests manuels : Flux complet vérifié
+- [ ] UI/UX : Amélioration du design (prochaine étape prioritaire)
 
 ### v0.3.0+ - Fonctionnalités métier (Planifié)
 - [ ] Gestion des collections (CRUD)
