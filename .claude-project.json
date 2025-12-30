@@ -105,12 +105,22 @@
   },
   "architecture": {
     "type": "monorepo",
+    "currentStyle": "Monolithe modulaire",
+    "futureStyle": "Microservices (post-MVP v1.0+)",
+    "strategy": "Commencer en monolithe modulaire pour MVP, migrer vers microservices après v1.0 selon les besoins de scalabilité",
     "structure": {
       "backend": {
         "path": "./backend",
         "tech": "GoLang + Gin/Echo",
         "port": 8080,
-        "description": "API REST pour la gestion des collections"
+        "description": "API REST monolithique modulaire",
+        "modules": [
+          "auth - Authentification et gestion utilisateurs",
+          "collections - Gestion des collections (v0.3.0)",
+          "items - Gestion des items (v0.4.0)",
+          "shared - Code partagé entre modules"
+        ],
+        "note": "Chaque module est découplé et prêt pour extraction en microservice"
       },
       "frontend": {
         "path": "./frontend",
@@ -122,6 +132,24 @@
         "path": "./shared",
         "description": "Types et utilitaires partagés entre frontend et backend"
       }
+    },
+    "microservicesMigration": {
+      "when": "Post-MVP (v1.0+)",
+      "phases": [
+        "Phase 1 (v1.1.0): Auth Service indépendant",
+        "Phase 2 (v1.2.0): Collections Service",
+        "Phase 3 (v1.3.0): Items Service"
+      ],
+      "infrastructure": [
+        "API Gateway (Kong, Traefik)",
+        "Service Discovery (Consul, etcd)",
+        "Kafka pour communication asynchrone",
+        "gRPC pour communication synchrone",
+        "Distributed tracing (Jaeger)",
+        "Kubernetes pour orchestration"
+      ],
+      "benefits": "Scalabilité, isolation, déploiements indépendants",
+      "tradeoffs": "Complexité accrue, debugging distribué"
     }
   },
   "stack": {

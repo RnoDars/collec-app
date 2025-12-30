@@ -69,6 +69,78 @@ Ce fichier liste les fonctionnalités et améliorations identifiées mais report
   - Alertes si un service est down
   - Version cible : v0.3.0 ou future
 
+## 🏗️ Architecture & Scalabilité
+
+### Migration vers Microservices (Post-MVP)
+
+**Contexte actuel (v0.1.0 - v1.0.0) :**
+- Architecture : **Monolithe modulaire**
+- Structure par domaines : auth, collections, items
+- Code découplé et prêt pour migration future
+
+**Migration planifiée (v1.0+) :**
+
+- [ ] **Évaluation des besoins de scalabilité**
+  - Analyser les métriques de charge
+  - Identifier les goulots d'étranglement
+  - Décider quels modules migrer en priorité
+  - Version cible : v1.0.0
+
+- [ ] **Découpage en microservices**
+  - **Phase 1 : Auth Service indépendant**
+    - Service d'authentification isolé
+    - Base de données dédiée
+    - API Gateway pour routage
+    - Version cible : v1.1.0
+
+  - **Phase 2 : Collections Service**
+    - Service de gestion des collections
+    - Base de données séparée
+    - Communication via Kafka
+    - Version cible : v1.2.0
+
+  - **Phase 3 : Items Service**
+    - Service de gestion des items
+    - Recherche avec Elasticsearch (optionnel)
+    - Version cible : v1.3.0
+
+- [ ] **Infrastructure microservices**
+  - API Gateway (Kong, Traefik, ou custom)
+  - Service Discovery (Consul, etcd)
+  - Distributed tracing (Jaeger, Zipkin)
+  - Centralized logging (ELK Stack)
+  - Configuration centralisée (Consul, etcd)
+  - Version cible : v1.x.x
+
+- [ ] **Communication inter-services**
+  - Kafka pour événements asynchrones
+  - gRPC pour communication synchrone
+  - Circuit breakers (resilience)
+  - Retry policies
+  - Version cible : v1.x.x
+
+- [ ] **Orchestration & Déploiement**
+  - Kubernetes pour orchestration
+  - Helm charts
+  - CI/CD par service
+  - Blue/Green deployment
+  - Version cible : v2.0.0
+
+**Avantages attendus :**
+- ✅ Scalabilité indépendante par service
+- ✅ Déploiements sans downtime
+- ✅ Isolation des pannes
+- ✅ Technologies différentes par service si besoin
+- ✅ Équipes autonomes par service
+
+**Complexité ajoutée :**
+- ⚠️ Debugging distribué plus complexe
+- ⚠️ Overhead de communication réseau
+- ⚠️ Gestion de la cohérence des données
+- ⚠️ Infrastructure plus lourde
+
+**Décision :** Monolithe modulaire jusqu'à v1.0, puis migration progressive basée sur les besoins réels de scalabilité.
+
 ---
 
 **Note :** Ces améliorations peuvent être planifiées entre deux versions majeures selon les priorités et le temps disponible.
