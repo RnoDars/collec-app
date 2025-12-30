@@ -22,23 +22,27 @@ Créer une application performante permettant aux utilisateurs de gérer, organi
   - ✅ Grafana opérationnel (sécurisé avec variables d'environnement)
   - ✅ Loki opérationnel (configuration v13 + tsdb)
   - ✅ Promtail opérationnel
-- [ ] Documentation détaillée installation Docker
-- [ ] Tests end-to-end complets
+- [x] Documentation détaillée installation Docker ✅
+- [x] Tests end-to-end complets ✅
 
 **📋 Voir [KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) pour l'historique des corrections**
 
-### v0.2.0 - Authentification ✅
+### v0.2.0 - Authentification ✅ (Complète et fonctionnelle)
 - [x] Backend : Inscription et connexion utilisateur
 - [x] Backend : Système JWT avec refresh tokens
 - [x] Backend : Endpoints protégés avec middleware
-- [x] Backend : Tests unitaires (service auth)
+- [x] Backend : Tests unitaires (11 tests, 82.1% couverture service auth)
 - [x] Backend : Tests E2E (13 tests automatisés)
 - [x] Frontend : Composants LoginForm et RegisterForm
 - [x] Frontend : Pages d'authentification (/login, /register, /profile)
 - [x] Frontend : Store Zustand avec persistance
-- [x] Frontend : Tests unitaires (18 tests, 100% couverture composants)
+- [x] Frontend : Tests unitaires (25 tests, 3 suites complètes)
 - [x] Tests manuels : Flux complet vérifié
-- [ ] UI/UX : Amélioration du design (prochaine étape prioritaire)
+- [x] Méthodologie TDD : Appliquée et documentée
+
+**📋 Voir [V0.2.0_PLAN.md](docs/V0.2.0_PLAN.md) pour le plan détaillé et [TDD_WORKFLOW.md](docs/TDD_WORKFLOW.md) pour la méthodologie**
+
+**🎯 Prochaine étape prioritaire :** UI/UX - Amélioration du design (voir [FUTURE_ENHANCEMENTS.md](docs/FUTURE_ENHANCEMENTS.md))
 
 ### v0.3.0+ - Fonctionnalités métier (Planifié)
 - [ ] Gestion des collections (CRUD)
@@ -205,5 +209,6 @@ Ce projet est privé.
 
 ---
 
-**Version actuelle:** 0.1.0
+**Version actuelle:** 0.2.0
 **Status:** En développement actif
+**Dernière mise à jour:** 30/12/2025
