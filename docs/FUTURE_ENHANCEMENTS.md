@@ -42,6 +42,18 @@ Ce fichier liste les fonctionnalités et améliorations identifiées mais report
   - Connexion via Google, GitHub, etc.
   - Version cible : v1.x.x
 
+## 🎨 UI/UX
+
+### Priorité Haute
+- [ ] **Amélioration de l'interface utilisateur**
+  - Design system : définir palette de couleurs, typographie, espacements
+  - Composants UI réutilisables : buttons, inputs, cards, modals
+  - Layout responsive amélioré
+  - Animations et transitions
+  - Considérer : Tailwind UI, shadcn/ui, ou design custom
+  - Version cible : v0.2.1 ou v0.3.0
+  - **Note :** UI actuelle fonctionnelle mais basique, à améliorer pour meilleure UX
+
 ## 📊 Dashboard
 
 - [ ] **Page Dashboard dédiée**
