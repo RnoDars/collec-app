@@ -9,7 +9,35 @@
 - **Grafana** - Démarré après correction permissions (port 3001)
 - **Promtail** - Démarré
 
-### 2. Problèmes de permissions ⚠️
+### 2. Problèmes de sécurité 🔒
+
+#### 2.1 Mot de passe Grafana faible ❌ CORRIGÉ
+**Symptôme :** Le mot de passe admin de Grafana était en dur dans docker-compose.yml avec une valeur faible (`admin/admin`)
+
+**Risque :** Accès non autorisé à Grafana et aux données de monitoring en production
+
+**Solution appliquée :**
+- Utilisation de variables d'environnement : `${GRAFANA_ADMIN_USER:-admin}` et `${GRAFANA_ADMIN_PASSWORD:-changeme}`
+- Création d'un fichier `.env.example` à la racine du projet
+- Documentation claire pour changer ces valeurs en production
+
+**Fichiers modifiés :**
+- `docker-compose.yml` - Variables d'environnement au lieu de valeurs en dur
+- `.env.example` - Template avec instructions
+
+**Action utilisateur requise :**
+```bash
+# Créer un fichier .env avec des mots de passe sécurisés
+cp .env.example .env
+# Éditer .env et changer GRAFANA_ADMIN_PASSWORD
+```
+
+**Status :** ✅ Corrigé
+
+#### 2.2 Mot de passe PostgreSQL faible ⚠️
+**Note :** Le mot de passe PostgreSQL est également faible (`postgres/postgres`) mais restera en dur pour le développement local. **À CHANGER ABSOLUMENT EN PRODUCTION** via variables d'environnement.
+
+#### 2.3 Problèmes de permissions ⚠️
 **Symptôme :** Les fichiers de configuration dans `monitoring/` avaient des permissions restrictives
 
 **Solution appliquée :**

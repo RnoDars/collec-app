@@ -89,9 +89,16 @@ cd frontend
 npm install
 ```
 
-4. **Lancer l'infrastructure avec Docker**
+4. **Configuration Docker (IMPORTANT pour la sécurité)**
 ```bash
-docker-compose up -d
+# À la racine du projet
+cp .env.example .env
+# Éditer .env et changer GRAFANA_ADMIN_PASSWORD avec un mot de passe fort !
+```
+
+5. **Lancer l'infrastructure avec Docker**
+```bash
+docker compose up -d
 ```
 
 Cela démarre :
@@ -119,9 +126,11 @@ L'application sera accessible sur http://localhost:3000
 
 ## 📊 Monitoring
 
-- **Grafana:** http://localhost:3001 (admin/admin)
+- **Grafana:** http://localhost:3001 (voir `.env` pour les identifiants)
 - **Prometheus:** http://localhost:9090
 - **Loki:** http://localhost:3100
+
+⚠️ **Sécurité :** Changez le mot de passe Grafana par défaut dans `.env` avant de démarrer Docker !
 
 ## 🧪 Tests
 
