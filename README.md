@@ -8,11 +8,15 @@ Créer une application performante permettant aux utilisateurs de gérer, organi
 
 ## ✨ Fonctionnalités (Roadmap)
 
-### v0.1.0 - Configuration initiale ✅ (En cours)
+### v0.1.0 - Configuration initiale 🚧 (En cours de test)
 - [x] Configuration complète du projet
 - [x] Architecture monorepo (backend Go + frontend Next.js)
 - [x] Stack de monitoring (Prometheus, Grafana, Loki)
 - [x] Infrastructure Docker (PostgreSQL, Kafka)
+- [x] Tests Backend Go ✅
+- [x] Tests Frontend Next.js ✅
+- [ ] Tests Infrastructure Docker (en attente d'environnement Docker)
+- [ ] Tests end-to-end complets
 
 ### v0.2.0 - Authentification (Planifié)
 - [ ] Inscription et connexion utilisateur
