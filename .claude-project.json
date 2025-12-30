@@ -1,0 +1,658 @@
+{
+  "project": {
+    "name": "collec-app",
+    "type": "fullstack-web-application",
+    "description": "Application web de gestion de collections avec GoLang + Next.js/TypeScript",
+    "version": "0.1.0"
+  },
+  "functionalDescription": {
+    "vision": "Créer une application moderne et performante permettant aux utilisateurs de gérer, organiser et partager leurs collections d'objets de manière intuitive et collaborative.",
+    "targetUsers": [
+      "Collectionneurs particuliers souhaitant cataloguer leurs objets (cartes, figurines, livres, etc.)",
+      "Professionnels gérant des inventaires de collections",
+      "Communautés d'enthousiastes souhaitant partager et échanger"
+    ],
+    "coreValue": "Simplicité d'utilisation, performance, et fonctionnalités collaboratives pour transformer la gestion de collections en une expérience agréable.",
+    "mainUseCases": {
+      "gestionPersonnelle": {
+        "title": "Gestion personnelle de collections",
+        "description": "Un utilisateur peut créer plusieurs collections (ex: ma collection de BD, mes figurines, mes timbres)",
+        "actions": [
+          "Créer une nouvelle collection avec un nom et une description",
+          "Ajouter des items à une collection avec photos, description, prix, date d'acquisition",
+          "Modifier ou supprimer des items",
+          "Organiser les items avec des catégories et des tags",
+          "Visualiser sa collection sous différentes vues (grille, liste, statistiques)"
+        ]
+      },
+      "rechercheFiltrage": {
+        "title": "Recherche et filtrage avancés",
+        "description": "L'utilisateur peut facilement retrouver des items dans ses collections",
+        "actions": [
+          "Rechercher par nom, description, tags",
+          "Filtrer par catégorie, prix, date d'acquisition",
+          "Trier les résultats (alphabétique, prix, date)",
+          "Sauvegarder des filtres favoris"
+        ]
+      },
+      "authentification": {
+        "title": "Gestion de compte utilisateur",
+        "description": "Système d'authentification sécurisé pour protéger les données",
+        "actions": [
+          "Créer un compte utilisateur",
+          "Se connecter / Se déconnecter",
+          "Gérer son profil (email, mot de passe)",
+          "Accéder uniquement à ses propres collections"
+        ]
+      },
+      "statistiques": {
+        "title": "Statistiques et visualisations",
+        "description": "Vue d'ensemble de ses collections avec des métriques",
+        "actions": [
+          "Nombre total d'items par collection",
+          "Valeur totale estimée",
+          "Répartition par catégorie (graphiques)",
+          "Évolution dans le temps"
+        ]
+      }
+    },
+    "futureUseCases": {
+      "partage": {
+        "title": "Partage et collaboration",
+        "description": "Partager ses collections avec d'autres utilisateurs",
+        "priority": "Haute"
+      },
+      "importExport": {
+        "title": "Import/Export de données",
+        "description": "Importer des collections depuis CSV/Excel, exporter pour backup",
+        "priority": "Moyenne"
+      },
+      "multimedia": {
+        "title": "Gestion avancée des médias",
+        "description": "Upload et gestion de plusieurs photos par item, zoom, galerie",
+        "priority": "Moyenne"
+      },
+      "marketplace": {
+        "title": "Marketplace d'échange",
+        "description": "Permettre aux utilisateurs d'échanger ou vendre des items",
+        "priority": "Basse"
+      }
+    },
+    "userJourney": {
+      "nouveauUtilisateur": [
+        "1. Arrivée sur la page d'accueil avec présentation de l'app",
+        "2. Création de compte (email/mot de passe)",
+        "3. Onboarding : création de sa première collection",
+        "4. Ajout de ses premiers items avec guide",
+        "5. Découverte des fonctionnalités de recherche et filtrage"
+      ],
+      "utilisateurRecurrent": [
+        "1. Connexion rapide",
+        "2. Dashboard avec aperçu de toutes ses collections",
+        "3. Navigation vers une collection spécifique",
+        "4. Ajout/modification d'items",
+        "5. Consultation des statistiques"
+      ]
+    },
+    "businessRules": [
+      "Un utilisateur ne peut voir que ses propres collections (pas de partage en v1)",
+      "Un item appartient à une seule collection",
+      "Un item peut avoir plusieurs tags",
+      "Les prix sont optionnels et en euros (€)",
+      "Les images sont limitées à 5MB par fichier (phase future)",
+      "Un utilisateur peut avoir un nombre illimité de collections et d'items"
+    ]
+  },
+  "architecture": {
+    "type": "monorepo",
+    "structure": {
+      "backend": {
+        "path": "./backend",
+        "tech": "GoLang + Gin/Echo",
+        "port": 8080,
+        "description": "API REST pour la gestion des collections"
+      },
+      "frontend": {
+        "path": "./frontend",
+        "tech": "Next.js + TypeScript",
+        "port": 3000,
+        "description": "Interface utilisateur pour la gestion des collections"
+      },
+      "shared": {
+        "path": "./shared",
+        "description": "Types et utilitaires partagés entre frontend et backend"
+      }
+    }
+  },
+  "stack": {
+    "backend": {
+      "language": "GoLang 1.21+",
+      "framework": "Gin (ou Echo)",
+      "database": "PostgreSQL",
+      "orm": "GORM",
+      "validation": "go-playground/validator",
+      "auth": "JWT (golang-jwt)",
+      "migration": "golang-migrate",
+      "messaging": "Apache Kafka (sarama ou confluent-kafka-go)"
+    },
+    "infrastructure": {
+      "database": "PostgreSQL 15+",
+      "messageQueue": "Apache Kafka",
+      "containerization": "Docker + Docker Compose"
+    },
+    "monitoring": {
+      "metrics": {
+        "tool": "Prometheus",
+        "port": 9090,
+        "description": "Collecte de métriques des services backend et frontend",
+        "exporters": [
+          "prometheus/client_golang pour Go backend",
+          "prom-client pour Next.js",
+          "postgres_exporter pour PostgreSQL",
+          "kafka_exporter pour Kafka"
+        ]
+      },
+      "visualization": {
+        "tool": "Grafana",
+        "port": 3001,
+        "description": "Dashboards pour visualiser les métriques et logs",
+        "datasources": ["Prometheus", "Loki"]
+      },
+      "logs": {
+        "tool": "Grafana Loki",
+        "port": 3100,
+        "description": "Agrégation et indexation des logs",
+        "agent": "Promtail pour collecter les logs"
+      },
+      "alerting": {
+        "tool": "Alertmanager",
+        "description": "Gestion des alertes Prometheus"
+      }
+    },
+    "frontend": {
+      "framework": "Next.js 14 (App Router)",
+      "language": "TypeScript",
+      "styling": "TailwindCSS",
+      "stateManagement": "Zustand + TanStack Query (React Query)",
+      "ui": "shadcn/ui",
+      "forms": "React Hook Form + Zod"
+    },
+    "devTools": {
+      "frontend": {
+        "linting": "ESLint",
+        "formatting": "Prettier",
+        "testing": "Jest + React Testing Library"
+      },
+      "backend": {
+        "linting": "golangci-lint",
+        "formatting": "gofmt",
+        "testing": "Go testing package + testify"
+      },
+      "commitLinting": "Commitlint"
+    }
+  },
+  "features": {
+    "core": [
+      "Création et gestion de collections",
+      "Ajout/édition/suppression d'items dans les collections",
+      "Catégorisation et tags",
+      "Recherche et filtrage",
+      "Authentification utilisateur"
+    ],
+    "planned": [
+      "Partage de collections",
+      "Import/Export de données",
+      "Images et médias",
+      "Statistiques et visualisations"
+    ]
+  },
+  "conventions": {
+    "codeStyle": {
+      "indentation": "2 spaces",
+      "quotes": "single",
+      "semicolons": true,
+      "trailingComma": "es5"
+    },
+    "naming": {
+      "frontend": {
+        "files": "kebab-case pour les fichiers, PascalCase pour les composants React",
+        "variables": "camelCase",
+        "constants": "UPPER_SNAKE_CASE",
+        "types": "PascalCase",
+        "interfaces": "PascalCase"
+      },
+      "backend": {
+        "files": "snake_case pour les fichiers",
+        "variables": "camelCase",
+        "constants": "PascalCase pour les constantes exportées",
+        "types": "PascalCase pour les structs",
+        "packages": "lowercase simple (pas de snake_case)"
+      }
+    },
+    "testing": {
+      "policy": "OBLIGATOIRE - Tous les nouveaux développements doivent inclure des tests unitaires",
+      "coverage": {
+        "target": "80% minimum de couverture de code",
+        "critical": "100% pour la logique métier critique et les services"
+      },
+      "backend": {
+        "framework": "Go testing package + testify/assert + testify/mock",
+        "structure": "Tests dans des fichiers *_test.go à côté du code source",
+        "patterns": [
+          "Tests unitaires pour chaque fonction/méthode publique",
+          "Tests d'intégration pour les repositories et services",
+          "Mocks pour les dépendances externes (DB, Kafka, APIs)",
+          "Table-driven tests pour tester plusieurs cas"
+        ]
+      },
+      "frontend": {
+        "framework": "Jest + React Testing Library + MSW (Mock Service Worker)",
+        "structure": "Tests dans des fichiers *.test.tsx à côté des composants",
+        "patterns": [
+          "Tests unitaires pour les hooks et utilitaires",
+          "Tests de composants avec user interactions",
+          "Tests d'intégration avec MSW pour mocker les APIs",
+          "Tests de snapshot pour les composants UI critiques"
+        ]
+      },
+      "rules": [
+        "Aucun code ne doit être mergé sans tests",
+        "Les tests doivent passer avant chaque commit (pre-commit hook)",
+        "Les PRs doivent inclure les tests dans le code review",
+        "La CI/CD doit bloquer si les tests échouent ou si la couverture baisse"
+      ]
+    },
+    "security": {
+      "authentication": {
+        "method": "JWT (JSON Web Tokens)",
+        "tokenStorage": "HttpOnly cookies (backend) + secure storage (frontend)",
+        "refreshTokens": "Implémentation avec rotation de tokens",
+        "passwordPolicy": "Minimum 8 caractères, complexité requise"
+      },
+      "authorization": {
+        "method": "RBAC (Role-Based Access Control)",
+        "roles": ["admin", "user", "guest"]
+      },
+      "apiSecurity": {
+        "cors": {
+          "enabled": true,
+          "allowedOrigins": "Configuration par environnement",
+          "credentials": true
+        },
+        "rateLimiting": {
+          "tool": "Middleware Gin/Echo + Redis",
+          "limits": "100 req/min par IP, 1000 req/min par utilisateur authentifié"
+        },
+        "headers": {
+          "helmet": "Configuration des headers de sécurité (CSP, HSTS, X-Frame-Options, etc.)",
+          "implementation": "Middleware personnalisé en Go"
+        }
+      },
+      "dataProtection": {
+        "encryption": {
+          "inTransit": "TLS 1.3 obligatoire en production",
+          "atRest": "Chiffrement des données sensibles en base de données"
+        },
+        "secrets": {
+          "management": "Variables d'environnement + .env files (jamais commité)",
+          "production": "À définir en phase industrialisation (Vault, AWS Secrets Manager, etc.)"
+        },
+        "inputValidation": {
+          "backend": "go-playground/validator pour toutes les entrées",
+          "frontend": "Zod schemas pour validation côté client",
+          "sanitization": "Protection contre XSS, SQL injection, command injection"
+        }
+      },
+      "dependencies": {
+        "scanning": "go mod verify + npm audit",
+        "updates": "Revue régulière des dépendances",
+        "production": "À automatiser en phase industrialisation (Dependabot, Snyk)"
+      }
+    },
+    "documentation": {
+      "api": {
+        "tool": "Swagger/OpenAPI 3.0",
+        "generation": "swaggo/swag pour générer la doc depuis les commentaires Go",
+        "endpoint": "/api/docs",
+        "features": [
+          "Documentation interactive (Swagger UI)",
+          "Schémas de requêtes/réponses",
+          "Exemples de payloads",
+          "Codes d'erreur documentés"
+        ]
+      },
+      "code": {
+        "backend": {
+          "style": "GoDoc conventions - commentaires au-dessus des fonctions exportées",
+          "packages": "Chaque package doit avoir un fichier doc.go",
+          "examples": "Exemples de code pour les fonctions complexes"
+        },
+        "frontend": {
+          "style": "JSDoc/TSDoc pour les fonctions utilitaires",
+          "components": "Props et types documentés avec commentaires",
+          "storybook": "À considérer pour la phase industrialisation"
+        }
+      },
+      "architecture": {
+        "location": "./docs",
+        "files": [
+          "architecture.md - Vue d'ensemble de l'architecture",
+          "database-schema.md - Schéma de base de données",
+          "api-guidelines.md - Conventions API REST",
+          "deployment.md - Guide de déploiement",
+          "contributing.md - Guide de contribution"
+        ]
+      },
+      "changelog": {
+        "tool": "CHANGELOG.md",
+        "format": "Keep a Changelog format",
+        "automation": "Génération automatique depuis les commits"
+      }
+    },
+    "errorHandling": {
+      "backend": {
+        "strategy": "Erreurs typées avec wrapping (errors.Wrap)",
+        "structure": {
+          "customErrors": "Types d'erreurs personnalisés par domaine",
+          "errorCodes": "Codes d'erreur standardisés (ERR_AUTH_001, ERR_DB_002, etc.)",
+          "context": "Contexte enrichi pour faciliter le debug"
+        },
+        "logging": {
+          "tool": "zerolog ou zap",
+          "format": "JSON structuré",
+          "levels": "DEBUG, INFO, WARN, ERROR, FATAL",
+          "fields": "request_id, user_id, endpoint, duration, error_stack"
+        },
+        "responses": {
+          "format": "Réponses d'erreur standardisées { code, message, details, request_id }",
+          "statusCodes": "Utilisation appropriée des codes HTTP (400, 401, 403, 404, 500, etc.)",
+          "production": "Masquage des détails sensibles en production"
+        }
+      },
+      "frontend": {
+        "strategy": "Error boundaries React + try/catch",
+        "display": {
+          "user": "Messages d'erreur conviviaux et actionnables",
+          "toast": "Notifications pour erreurs non-critiques",
+          "fallback": "Pages d'erreur pour erreurs critiques"
+        },
+        "logging": {
+          "console": "Logs détaillés en développement",
+          "production": "À définir en phase industrialisation (Sentry, LogRocket, etc.)"
+        },
+        "retry": {
+          "strategy": "Retry automatique pour erreurs réseau (TanStack Query)",
+          "exponentialBackoff": "Délai exponentiel entre les tentatives"
+        }
+      },
+      "monitoring": {
+        "errorTracking": "Intégration future avec Sentry en phase industrialisation",
+        "alerts": "Alertmanager pour erreurs critiques (taux d'erreur > seuil)",
+        "dashboard": "Dashboard Grafana dédié aux erreurs et incidents"
+      }
+    },
+    "git": {
+      "branches": "main (production), develop (développement), feature/* (nouvelles fonctionnalités)",
+      "commits": {
+        "format": "Conventional Commits (feat:, fix:, docs:, chore:, etc.)",
+        "policy": "OBLIGATOIRE - Commits réguliers et atomiques",
+        "rules": [
+          "Faire des commits petits et fréquents (idéalement toutes les 15-30 minutes de travail)",
+          "Chaque commit doit représenter UNE modification logique et cohérente",
+          "Un commit = Une fonctionnalité, un fix, ou une modification spécifique",
+          "Commiter avant de changer de contexte ou de passer à une nouvelle tâche",
+          "Messages clairs et descriptifs en français",
+          "Utiliser les préfixes Conventional Commits : feat:, fix:, docs:, chore:, refactor:, test:"
+        ],
+        "examples": [
+          "feat: ajoute la structure de base du projet backend",
+          "feat: configure le module Go avec go.mod",
+          "feat: ajoute la gestion des erreurs avec codes standardisés",
+          "docs: ajoute le fichier .env.example pour la configuration",
+          "chore: initialise le frontend Next.js avec TypeScript",
+          "feat: crée la page d'accueil avec Tailwind CSS"
+        ],
+        "antiPatterns": [
+          "❌ 'WIP' ou 'work in progress' sans description",
+          "❌ Commits trop gros avec plusieurs fonctionnalités",
+          "❌ Messages vagues comme 'update', 'fix bug', 'changes'",
+          "❌ Attendre d'avoir fini toute une feature pour commiter"
+        ]
+      }
+    }
+  },
+  "projectManagement": {
+    "methodology": "Itératif avec cycle : Besoin fonctionnel → Planification → Développement → Tests → Review",
+    "workflow": [
+      "1. BESOIN : Définir ou revoir le besoin fonctionnel",
+      "2. PLANIFICATION : Créer les tâches et estimer la complexité",
+      "3. DÉVELOPPEMENT : Coder avec tests unitaires obligatoires",
+      "4. REVIEW : Vérifier la conformité avec le besoin initial",
+      "5. ITÉRATION : Passer à la prochaine version ou fonctionnalité"
+    ],
+    "versioning": {
+      "strategy": "Semantic Versioning (MAJOR.MINOR.PATCH)",
+      "currentVersion": "0.1.0",
+      "explanation": {
+        "0.x.x": "Phase de développement initial / MVP",
+        "1.x.x": "Première version stable en production",
+        "x.MINOR.x": "Nouvelles fonctionnalités",
+        "x.x.PATCH": "Corrections de bugs"
+      }
+    },
+    "completedVersions": [
+      {
+        "version": "0.1.0",
+        "date": "2025-12-30",
+        "status": "EN COURS",
+        "description": "Initialisation du projet et configuration",
+        "deliverables": [
+          "✓ Configuration du projet (.claude-project.json)",
+          "✓ Définition de la stack technique complète",
+          "✓ Définition des conventions de code et tests",
+          "✓ Configuration monitoring (Prometheus, Grafana, Loki)",
+          "✓ Définition des politiques de sécurité",
+          "✓ Définition de la documentation",
+          "✓ Définition de la gestion des erreurs",
+          "✓ Description fonctionnelle et métier",
+          "○ Structure de base des dossiers (backend, frontend, shared)",
+          "○ Initialisation du backend Go",
+          "○ Initialisation du frontend Next.js",
+          "○ Docker-compose avec PostgreSQL, Kafka, monitoring",
+          "○ README et documentation de démarrage"
+        ]
+      }
+    ],
+    "upcomingVersions": [
+      {
+        "version": "0.2.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Authentification et gestion utilisateurs",
+        "functionalScope": [
+          "Inscription utilisateur (email/password)",
+          "Connexion/Déconnexion",
+          "Gestion du profil utilisateur",
+          "Système JWT avec refresh tokens",
+          "Pages frontend : Login, Register, Profile"
+        ],
+        "technicalTasks": [
+          "Modèle User en base de données",
+          "API endpoints : POST /auth/register, POST /auth/login, POST /auth/logout, GET /auth/me",
+          "Middleware d'authentification JWT",
+          "Hash des mots de passe (bcrypt)",
+          "Composants React : LoginForm, RegisterForm, ProfilePage",
+          "Context d'authentification frontend",
+          "Tests unitaires backend et frontend",
+          "Documentation API avec Swagger"
+        ],
+        "estimatedComplexity": "Moyenne",
+        "blockers": "Nécessite que v0.1.0 soit complète"
+      },
+      {
+        "version": "0.3.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Gestion des collections",
+        "functionalScope": [
+          "Créer une collection (nom, description)",
+          "Lister ses collections",
+          "Modifier une collection",
+          "Supprimer une collection",
+          "Dashboard avec aperçu des collections"
+        ],
+        "technicalTasks": [
+          "Modèle Collection en base de données (relation avec User)",
+          "API CRUD : GET/POST/PUT/DELETE /collections",
+          "Autorisation : un user ne voit que ses collections",
+          "Pages frontend : Dashboard, CollectionList, CollectionForm",
+          "Tests unitaires et d'intégration",
+          "Documentation API"
+        ],
+        "estimatedComplexity": "Moyenne",
+        "blockers": "Nécessite authentification (v0.2.0)"
+      },
+      {
+        "version": "0.4.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Gestion des items",
+        "functionalScope": [
+          "Ajouter un item à une collection (nom, description, prix, date)",
+          "Lister les items d'une collection",
+          "Modifier un item",
+          "Supprimer un item",
+          "Vue détaillée d'un item"
+        ],
+        "technicalTasks": [
+          "Modèle Item en base de données (relation avec Collection)",
+          "API CRUD : GET/POST/PUT/DELETE /collections/:id/items",
+          "Pages frontend : ItemList, ItemForm, ItemDetail",
+          "Formulaires avec validation (React Hook Form + Zod)",
+          "Tests unitaires et d'intégration",
+          "Documentation API"
+        ],
+        "estimatedComplexity": "Moyenne",
+        "blockers": "Nécessite gestion collections (v0.3.0)"
+      },
+      {
+        "version": "0.5.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Catégories et tags",
+        "functionalScope": [
+          "Ajouter des catégories prédéfinies",
+          "Créer des tags personnalisés",
+          "Assigner catégories et tags aux items",
+          "Filtrer les items par catégorie/tags"
+        ],
+        "estimatedComplexity": "Moyenne"
+      },
+      {
+        "version": "0.6.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Recherche et filtrage",
+        "functionalScope": [
+          "Recherche full-text sur items",
+          "Filtres multiples (catégorie, tags, prix, date)",
+          "Tri des résultats",
+          "Sauvegarde de filtres favoris"
+        ],
+        "estimatedComplexity": "Haute"
+      },
+      {
+        "version": "0.7.0",
+        "status": "PLANIFIÉ",
+        "description": "MVP - Statistiques de base",
+        "functionalScope": [
+          "Nombre d'items par collection",
+          "Valeur totale par collection",
+          "Graphiques de répartition par catégorie",
+          "Dashboard avec métriques globales"
+        ],
+        "estimatedComplexity": "Moyenne"
+      },
+      {
+        "version": "1.0.0",
+        "status": "OBJECTIF",
+        "description": "Release MVP - Version stable en production",
+        "functionalScope": "Toutes les fonctionnalités MVP (v0.2 à v0.7) + corrections bugs + optimisations",
+        "additionalTasks": [
+          "Tests E2E complets",
+          "Documentation utilisateur",
+          "Guide de déploiement",
+          "Optimisations de performance",
+          "Audit de sécurité"
+        ]
+      }
+    ],
+    "futureFeatures": {
+      "v1.1.0": "Partage de collections",
+      "v1.2.0": "Import/Export de données",
+      "v1.3.0": "Gestion avancée des images",
+      "v2.0.0": "Marketplace et échanges entre utilisateurs"
+    },
+    "currentFocus": {
+      "version": "0.1.0",
+      "phase": "Setup & Configuration",
+      "nextStep": "Terminer l'initialisation de la structure du projet",
+      "remainingTasks": [
+        "Créer la structure de base des dossiers",
+        "Initialiser le module Go pour le backend",
+        "Initialiser le frontend Next.js avec TypeScript",
+        "Créer le docker-compose.yml avec tous les services",
+        "Créer un fichier .gitignore approprié",
+        "Mettre à jour le README.md avec la documentation du projet"
+      ]
+    }
+  },
+  "industrialization": {
+    "phase": "À PLANIFIER PLUS TARD",
+    "topics": [
+      "CI/CD Pipeline (GitHub Actions, GitLab CI)",
+      "Stratégie de cache (Redis)",
+      "Stockage de fichiers (S3, MinIO)",
+      "Tests E2E (Playwright, Cypress)",
+      "Déploiement et environnements (staging, production)"
+    ],
+    "note": "Ces éléments seront traités dans une phase d'industrialisation dédiée"
+  },
+  "scripts": {
+    "dev": "Lancer le backend et frontend en mode développement",
+    "build": "Build le frontend et le backend pour la production",
+    "test": "Lancer tous les tests (backend + frontend)",
+    "test:backend": "Lancer les tests Go avec couverture",
+    "test:frontend": "Lancer les tests Jest avec couverture",
+    "test:coverage": "Générer le rapport de couverture complet",
+    "test:watch": "Lancer les tests en mode watch pour le développement",
+    "lint": "Vérifier le code avec ESLint et golangci-lint",
+    "format": "Formater le code avec Prettier et gofmt"
+  },
+  "environment": {
+    "backend": {
+      "goVersion": ">=1.21",
+      "packageManager": "go modules"
+    },
+    "frontend": {
+      "nodeVersion": ">=18.0.0",
+      "packageManager": "npm ou pnpm"
+    }
+  },
+  "notes": [
+    "Structure monorepo pour faciliter le partage de types entre frontend et backend",
+    "Backend GoLang pour performance et simplicité de déploiement",
+    "Next.js 14 avec App Router pour SSR et optimisations",
+    "PostgreSQL comme base de données relationnelle principale",
+    "GORM pour une gestion type-safe de la base de données en Go",
+    "Apache Kafka pour la communication asynchrone et l'event streaming",
+    "TanStack Query pour la gestion du cache et des requêtes API",
+    "TailwindCSS + shadcn/ui pour un styling rapide et cohérent",
+    "Le dossier shared contiendra des définitions de types générés depuis Go vers TypeScript",
+    "Docker Compose pour orchestrer PostgreSQL, Kafka et les services localement",
+    "Stack de monitoring complète : Prometheus (métriques) + Grafana (visualisation) + Loki (logs)",
+    "Les métriques incluront : latence API, throughput, erreurs, utilisation ressources, métriques business",
+    "Les logs seront centralisés et structurés (JSON) pour faciliter le debug et l'analyse",
+    "IMPORTANT : Tests unitaires OBLIGATOIRES pour tout nouveau code avec minimum 80% de couverture",
+    "Test-Driven Development (TDD) recommandé pour la logique métier complexe",
+    "Utilisation de mocks et stubs pour isoler les tests unitaires des dépendances externes",
+    "Sécurité : JWT + RBAC, rate limiting, CORS, validation stricte, TLS en production",
+    "Documentation : Swagger/OpenAPI pour l'API, GoDoc/JSDoc pour le code, docs/ pour l'architecture",
+    "Gestion des erreurs : Erreurs typées, codes standardisés, logs structurés, retry automatique frontend"
+  ]
+}
