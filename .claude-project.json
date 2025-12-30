@@ -427,9 +427,34 @@
       "1. BESOIN : Définir ou revoir le besoin fonctionnel",
       "2. PLANIFICATION : Créer les tâches et estimer la complexité",
       "3. DÉVELOPPEMENT : Coder avec tests unitaires obligatoires",
-      "4. REVIEW : Vérifier la conformité avec le besoin initial",
-      "5. ITÉRATION : Passer à la prochaine version ou fonctionnalité"
+      "4. TESTS : Écrire et exécuter les tests (OBLIGATOIRE avant commit)",
+      "5. REVIEW : Vérifier la conformité avec le besoin initial",
+      "6. ITÉRATION : Passer à la prochaine version ou fonctionnalité"
     ],
+    "developmentCycle": {
+      "description": "Cycle de développement OBLIGATOIRE pour CHAQUE fonctionnalité",
+      "steps": [
+        "1. Planifier - Définir ce qu'on va développer",
+        "2. Écrire le code - Implémenter la fonctionnalité",
+        "3. Écrire les tests - Tests unitaires couvrant tous les cas (succès + erreurs)",
+        "4. Exécuter les tests - Backend: go test ./... -v | Frontend: npm test",
+        "5. Vérifier la couverture - Minimum 80% requis",
+        "6. Tester manuellement (si applicable) - curl, navigateur, etc.",
+        "7. Corriger si nécessaire - Retour à l'étape 2 si tests échouent",
+        "8. Commit - SEULEMENT si tous les tests passent ✅"
+      ],
+      "rules": [
+        "🚫 JAMAIS de commit sans tests écrits",
+        "🚫 JAMAIS de commit si les tests échouent",
+        "✅ Couverture minimum : 80%",
+        "✅ Tous les tests doivent passer à 100%",
+        "✅ Tests unitaires + tests manuels si applicable",
+        "✅ Mentionner les tests dans le message de commit"
+      ],
+      "commitFormat": {
+        "template": "feat/fix: description\n\nCode:\n- Fichier 1\n- Fichier 2\n\nTests:\n- Test file (X tests, Y% coverage)\n- Résultats: ✅ All tests passing\n\nTests manuels (si applicable):\n✅ Test 1\n✅ Test 2"
+      }
+    },
     "versioning": {
       "strategy": "Semantic Versioning (MAJOR.MINOR.PATCH)",
       "currentVersion": "0.1.0",
