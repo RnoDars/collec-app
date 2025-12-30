@@ -1,0 +1,46 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'collec-app'
+    replica: 'main'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  # - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Backend Go API (à activer en v0.2.0+)
+  # - job_name: 'backend-api'
+  #   static_configs:
+  #     - targets: ['host.docker.internal:8080']
+  #   metrics_path: '/metrics'
+
+  # Frontend Next.js (à activer en v0.2.0+)
+  # - job_name: 'frontend'
+  #   static_configs:
+  #     - targets: ['host.docker.internal:3000']
+  #   metrics_path: '/api/metrics'
+
+  # PostgreSQL exporter (optionnel)
+  # - job_name: 'postgres'
+  #   static_configs:
+  #     - targets: ['postgres-exporter:9187']
+
+  # Kafka exporter (optionnel)
+  # - job_name: 'kafka'
+  #   static_configs:
+  #     - targets: ['kafka-exporter:9308']
